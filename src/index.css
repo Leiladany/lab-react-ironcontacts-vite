@@ -14,6 +14,11 @@
   -webkit-text-size-adjust: 100%;
 }
 
+img {
+  max-width: 80px;
+  height: 120px;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -36,10 +41,15 @@ h1 {
   line-height: 1.1;
 }
 
+th {
+  padding: 10px;
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
+  margin: 20px;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
@@ -48,7 +58,7 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #e064ff;
 }
 button:focus,
 button:focus-visible {

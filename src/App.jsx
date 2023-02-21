@@ -1,34 +1,105 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import {useState} from 'react'
 import './App.css'
+import contacts from './contacts.json'
+
+// Show 5 actors
+
+const actorsFiveMax = contacts.splice(0, 5)
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [actors, setActors] = useState(actorsFiveMax)
+  let copyArray = [...actors]
+
+  // Add random contacts
+
+  const addRandomContact = () => {
+
+    let randomContact =
+      contacts[Math.floor(Math.random() * contacts.length) + 5]
+
+    let existIn = contacts.indexOf(randomContact);
+
+    if (randomContact) {
+      copyArray.unshift(randomContact);
+    }
+    
+    if (existIn > -1) {
+      contacts.splice(existIn, 1);
+    }
+
+    setActors(copyArray)
+  }
+
+  // Sort by popularity
+
+  const sortByPopularity = () => {
+    copyArray.sort(function (a, b) {
+      return b.popularity - a.popularity;
+    })
+    setActors(copyArray)
+  }
+
+  // Sort by name
+
+  const sortByName = () => {
+    copyArray.sort((a, b) => a.name.localeCompare(b.name));
+    setActors(copyArray)
+  }
+
+  // Delete
+
+  const deleteActor = (actorID) => {
+    setActors(actors.filter((c) => c !== actorID));
+  }
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <h1>Ironcontacts</h1>
+    <button onClick={addRandomContact}>Add random contact</button>
+    <button onClick={sortByName}>Sort by name</button>
+      <button onClick={sortByPopularity}>Sort by popularity</button>
+      <table className="tableActors">
+        <thead>
+          <tr className='title'>
+            <th> Picture </th>
+            <th> Name </th>
+            <th> Popularity </th>
+            <th> Won Oscar</th>
+            <th> Won Emmy</th>
+          </tr>
+        </thead>
+        <tbody>
+          {actors.map((actor) => {
+            return (
+              <tr key={actor.id}>
+                <td>
+                  <img
+                    src={actor.pictureUrl}
+                    alt="Actor"
+                  />
+                </td>
+                <td> {actor.name} </td>
+                <td> {Number(actor.popularity).toFixed(1)}</td>
+                <td>{actor.wonOscar ? "🏆" : ""}</td>
+                <td>{actor.wonEmmy ? "⭐" : ""}</td>
+                <td>
+
+                {/* Can't make it work */}
+
+                  <button
+                    onClick={() => {
+                      deleteActor(actor.id);
+                    }}
+                    id={actor.id}>
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
     </div>
   )
 }
-
 export default App
